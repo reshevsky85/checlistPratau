@@ -185,6 +185,29 @@
       border: 1px solid rgba(250, 255, 0, 0.4);
       text-shadow: 0 0 6px rgba(250, 255, 0, 0.6);
       font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+      position: relative;
+    }
+
+    .oil-code:hover {
+      background: rgba(250, 255, 0, 0.2);
+      box-shadow: 0 0 12px rgba(250, 255, 0, 0.5);
+      transform: scale(1.05);
+    }
+
+    .oil-code:active {
+      transform: scale(0.96);
+    }
+
+    .oil-code.copied,
+    .oil-card.complete .oil-code.copied {
+      background: rgba(0, 255, 157, 0.25) !important;
+      color: #00ff9d !important;
+      border-color: #00ff9d !important;
+      text-shadow: 0 0 8px rgba(0, 255, 157, 0.9) !important;
+      box-shadow: 0 0 15px rgba(0, 255, 157, 0.7) !important;
     }
 
     .oil-card.complete .oil-code {
@@ -794,7 +817,7 @@
       const header = document.createElement("div");
       header.className = "oil-header";
       header.innerHTML = `
-        <span class="oil-code">${oil.code}</span>
+        <span class="oil-code" data-code="${oil.code}" title="Kliknij aby skopiować">${oil.code}</span>
         <div class="oil-info">
           <div class="oil-name">${oil.name}</div>
           <div class="transport-badges">${transportBadges}</div>
@@ -912,6 +935,44 @@
 
       saveState();
     }
+
+    // ── Copy oil code to clipboard ────────────────────────────────
+    async function copyToClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        try { await navigator.clipboard.writeText(text); return true; } catch (e) {}
+      }
+      // Fallback for file:// or older browsers
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.top = "-1000px";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    document.querySelectorAll(".oil-code").forEach(codeEl => {
+      codeEl.addEventListener("click", async e => {
+        e.stopPropagation(); // don't toggle the card
+        const code = codeEl.dataset.code;
+        const originalText = codeEl.textContent;
+        const ok = await copyToClipboard(code);
+        if (ok) {
+          codeEl.textContent = "✓ SKOPIOWANO";
+          codeEl.classList.add("copied");
+          if (soundsEnabled) playBeep(1100, 0.09, "sine", 0.05);
+          setTimeout(() => {
+            codeEl.textContent = originalText;
+            codeEl.classList.remove("copied");
+          }, 1200);
+        }
+      });
+    });
 
     // ── Transport filter ──────────────────────────────────────────
     let currentFilter = "all";
