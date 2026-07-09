@@ -675,16 +675,707 @@
       display: none;
     }
 
+    /* Weather chip in subtitle */
+    .weather-chip {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      margin-left: 8px;
+      padding: 2px 8px;
+      background: rgba(0, 229, 255, 0.15);
+      border: 1px solid #00e5ff;
+      border-radius: 999px;
+      font-size: 11px;
+      color: #00e5ff;
+      text-shadow: 0 0 6px rgba(0, 229, 255, 0.6);
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+    .weather-chip.loaded { display: inline-flex; }
+
+    /* Weather warning banner */
+    .weather-alert-banner {
+      display: none;
+      background: rgba(239, 159, 39, 0.12);
+      border: 1px solid #efa027;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      color: #efa027;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      align-items: center;
+      gap: 10px;
+      text-shadow: 0 0 8px rgba(239, 159, 39, 0.5);
+      box-shadow: 0 0 15px rgba(239, 159, 39, 0.25);
+    }
+    .weather-alert-banner.active { display: flex; }
+    .weather-alert-banner .weather-icon { font-size: 20px; }
+
+    /* ═══════════════════════════════════════════════════════════
+       LIGHT MODE — clean, office-friendly overrides
+       ═══════════════════════════════════════════════════════════ */
+    body.light-mode {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f0;
+      color: #2c2c2a;
+    }
+    body.light-mode .container {
+      background: #ffffff;
+      border: 1px solid #e5e3dc;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      backdrop-filter: none;
+    }
+    body.light-mode .header h1 {
+      color: #2c2c2a; text-shadow: none; letter-spacing: 0; font-weight: 500;
+    }
+    body.light-mode .header .subtitle {
+      color: #5f5e5a; text-shadow: none; letter-spacing: 0;
+    }
+    body.light-mode .icon-circle {
+      background: #e6f1fb; color: #185fa5; border: none; box-shadow: none;
+    }
+    body.light-mode .overall-progress {
+      background: #f9f8f3; border-color: #e5e3dc; box-shadow: none;
+    }
+    body.light-mode .progress-label {
+      color: #5f5e5a; text-shadow: none; text-transform: none;
+      letter-spacing: 0; font-weight: 500;
+    }
+    body.light-mode .progress-count {
+      color: #2c2c2a; text-shadow: none; font-weight: 500;
+    }
+    body.light-mode .progress-bar { background: #e5e3dc; border: none; }
+    body.light-mode .progress-bar-fill {
+      background: #1d9e75; box-shadow: none;
+    }
+    body.light-mode .filter-bar {
+      background: #f9f8f3; border-color: #e5e3dc;
+    }
+    body.light-mode .filter-pill {
+      color: #5f5e5a; text-shadow: none; font-weight: 500;
+      text-transform: none; letter-spacing: 0;
+    }
+    body.light-mode .filter-pill .pill-count {
+      background: rgba(0,0,0,0.06); color: #444441;
+    }
+    body.light-mode .filter-pill.active[data-filter="all"] {
+      background: #eeedfe; border-color: #7f77dd; color: #3c3489;
+      box-shadow: none; text-shadow: none;
+    }
+    body.light-mode .filter-pill.active[data-filter="road"] {
+      background: #e6f1fb; border-color: #378add; color: #185fa5;
+      box-shadow: none; text-shadow: none;
+    }
+    body.light-mode .filter-pill.active[data-filter="intermodal"] {
+      background: #e1f5ee; border-color: #1d9e75; color: #0f6e56;
+      box-shadow: none; text-shadow: none;
+    }
+    body.light-mode .oil-card {
+      background: #ffffff; border-color: #e5e3dc;
+    }
+    body.light-mode .oil-card:hover {
+      border-color: #b4b2a9; box-shadow: none;
+    }
+    body.light-mode .oil-card.complete {
+      background: #f4faec; border-color: #97c459; box-shadow: none;
+    }
+    body.light-mode .oil-header:hover { background: #f9f8f3; }
+    body.light-mode .oil-card.complete .oil-header:hover { background: #eaf3de; }
+    body.light-mode .oil-code {
+      background: #f1efe8; color: #5f5e5a; border-color: #e5e3dc;
+      text-shadow: none; font-weight: 500;
+    }
+    body.light-mode .oil-code:hover {
+      background: #e5e3dc; box-shadow: none;
+    }
+    body.light-mode .oil-card.complete .oil-code {
+      background: #eaf3de; color: #27500a; border-color: #97c459; text-shadow: none;
+    }
+    body.light-mode .oil-code.copied,
+    body.light-mode .oil-card.complete .oil-code.copied {
+      background: #e1f5ee !important; color: #0f6e56 !important;
+      border-color: #1d9e75 !important; text-shadow: none !important;
+      box-shadow: none !important;
+    }
+    body.light-mode .oil-name { color: #2c2c2a; text-shadow: none; }
+    body.light-mode .transport-badge {
+      font-weight: 500; text-transform: none; letter-spacing: 0;
+    }
+    body.light-mode .transport-badge.road {
+      background: #e6f1fb; color: #185fa5; border-color: #b5d4f4;
+      text-shadow: none; box-shadow: none;
+    }
+    body.light-mode .transport-badge.intermodal {
+      background: #e1f5ee; color: #0f6e56; border-color: #9fe1cb;
+      text-shadow: none; box-shadow: none;
+    }
+    body.light-mode .transport-badge.intermodal-electrical {
+      background: #eeedfe; color: #3c3489; border-color: #afa9ec;
+      text-shadow: none; box-shadow: none;
+    }
+    body.light-mode .oil-badge {
+      color: #5f5e5a; background: #f1efe8; border-color: #e5e3dc; text-shadow: none;
+    }
+    body.light-mode .oil-card.complete .oil-badge {
+      background: #1d9e75; color: #ffffff; border-color: #1d9e75; box-shadow: none;
+    }
+    body.light-mode .chevron { color: #888780; text-shadow: none; }
+    body.light-mode .check-item {
+      background: #ffffff; border-color: #e5e3dc;
+    }
+    body.light-mode .check-item:hover {
+      border-color: #b4b2a9; box-shadow: none;
+    }
+    body.light-mode .check-item.checked {
+      background: #eaf3de; border-color: #97c459; box-shadow: none;
+    }
+    body.light-mode .check-item .content p { color: #2c2c2a; }
+    body.light-mode .check-item.checked .content p {
+      color: #27500a; text-shadow: none;
+    }
+    body.light-mode .check-item .note { color: #5f5e5a; text-shadow: none; }
+    body.light-mode .check-item input[type="checkbox"] { accent-color: #1d9e75; }
+    body.light-mode .result-box {
+      background: linear-gradient(135deg, #eaf3de 0%, #f4faec 100%);
+      border: 1px solid #97c459; box-shadow: none; animation: slideIn 0.5s ease;
+    }
+    body.light-mode .result-icon { filter: none; }
+    body.light-mode .result-title {
+      color: #27500a; text-shadow: none; letter-spacing: 0; text-transform: none;
+      font-weight: 500;
+    }
+    body.light-mode .result-message { color: #27500a; text-shadow: none; }
+    body.light-mode .result-message strong { color: #185fa5; text-shadow: none; }
+    body.light-mode .btn {
+      border-color: #b4b2a9; color: #2c2c2a; text-shadow: none;
+      box-shadow: none; text-transform: none; letter-spacing: 0; font-weight: 500;
+    }
+    body.light-mode .btn:hover {
+      background: #f1efe8; color: #2c2c2a; box-shadow: none;
+    }
+    body.light-mode .btn-primary {
+      background: #2c2c2a; color: #ffffff; border-color: #2c2c2a;
+      text-shadow: none; box-shadow: none;
+    }
+    body.light-mode .btn-primary:hover { background: #444441; box-shadow: none; }
+    body.light-mode .sound-toggle,
+    body.light-mode .theme-toggle {
+      color: #5f5e5a; border-color: #b4b2a9; text-shadow: none; box-shadow: none;
+    }
+    body.light-mode .sound-toggle:hover,
+    body.light-mode .theme-toggle:hover {
+      background: #f1efe8; box-shadow: none;
+    }
+    body.light-mode .sound-toggle.muted {
+      color: #b4b2a9; border-color: #d3d1c7; opacity: 0.6;
+    }
+    body.light-mode .day-alert-banner {
+      background: #fbeaf0; border-color: #d4537e; color: #993556;
+      animation: none; text-shadow: none;
+    }
+    body.light-mode .day-alert-banner .alert-icon,
+    body.light-mode .day-alert-banner .alert-text {
+      animation: none; text-shadow: none;
+    }
+    body.light-mode .check-item.alert:not(.checked) {
+      animation: none; background: #fbeaf0; border-color: #d4537e; box-shadow: none;
+    }
+    body.light-mode .check-item.alert:not(.checked) .content p {
+      color: #993556; text-shadow: none;
+    }
+    body.light-mode .weather-alert-banner {
+      background: #faeeda; border-color: #ba7517; color: #854f0b;
+      text-shadow: none; box-shadow: none; text-transform: none;
+      letter-spacing: 0; font-weight: 500;
+    }
+    body.light-mode .weather-chip {
+      background: #e6f1fb; border-color: #b5d4f4; color: #185fa5;
+      text-shadow: none; font-weight: 500;
+    }
+
+    /* ── Two-column page layout ── */
+    .page-layout {
+      display: flex;
+      gap: 16px;
+      max-width: 1560px;
+      margin: 0 auto;
+      align-items: flex-start;
+    }
+    .page-layout .container {
+      flex: 1;
+      min-width: 0;
+      margin: 0;
+    }
+
+    /* ── Action plan side panel (left) ── */
+    .plan-panel {
+      width: 320px;
+      flex-shrink: 0;
+      background: rgba(18, 18, 30, 0.85);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid rgba(185, 103, 255, 0.3);
+      box-shadow:
+        0 0 20px rgba(185, 103, 255, 0.12),
+        inset 0 0 20px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 24px;
+    }
+    .plan-panel h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #b967ff;
+      margin: 0 0 4px;
+      text-shadow: 0 0 10px rgba(185, 103, 255, 0.7);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .plan-panel .plan-sub {
+      font-size: 12px;
+      color: #00e5ff;
+      margin: 0 0 16px;
+      text-shadow: 0 0 6px rgba(0, 229, 255, 0.5);
+    }
+    .plan-day {
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgba(10, 10, 20, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.25s;
+    }
+    .plan-day:last-child { margin-bottom: 0; }
+    .plan-day-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e8e8f0;
+      margin: 0 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .plan-day ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .plan-day li {
+      font-size: 12px;
+      line-height: 1.45;
+      color: #b0b0c0;
+      padding-left: 16px;
+      position: relative;
+    }
+    .plan-day li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: #b967ff;
+      text-shadow: 0 0 5px rgba(185, 103, 255, 0.6);
+    }
+    /* Today highlight */
+    .plan-day.today {
+      background: rgba(0, 255, 157, 0.08);
+      border-color: #00ff9d;
+      box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+    }
+    .plan-day.today .plan-day-name {
+      color: #00ff9d;
+      text-shadow: 0 0 8px rgba(0, 255, 157, 0.7);
+    }
+    .plan-day.today li { color: #d0f0e0; }
+    .plan-day.today li::before { color: #00ff9d; text-shadow: 0 0 5px rgba(0, 255, 157, 0.7); }
+    .today-tag {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: #00ff9d;
+      color: #0a0a12;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+    }
+
+    /* Light mode — plan panel */
+    body.light-mode .plan-panel {
+      background: #ffffff;
+      border: 1px solid #e5e3dc;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      backdrop-filter: none;
+    }
+    body.light-mode .plan-panel h2 {
+      color: #3c3489; text-shadow: none; letter-spacing: 0;
+      text-transform: none; font-weight: 600;
+    }
+    body.light-mode .plan-panel .plan-sub { color: #5f5e5a; text-shadow: none; }
+    body.light-mode .plan-day {
+      background: #f9f8f3; border-color: #e5e3dc;
+    }
+    body.light-mode .plan-day-name { color: #2c2c2a; text-shadow: none; }
+    body.light-mode .plan-day li { color: #5f5e5a; }
+    body.light-mode .plan-day li::before { color: #7f77dd; text-shadow: none; }
+    body.light-mode .plan-day.today {
+      background: #f4faec; border-color: #97c459; box-shadow: none;
+    }
+    body.light-mode .plan-day.today .plan-day-name { color: #27500a; text-shadow: none; }
+    body.light-mode .plan-day.today li { color: #3a5a24; }
+    body.light-mode .plan-day.today li::before { color: #1d9e75; text-shadow: none; }
+    body.light-mode .today-tag {
+      background: #1d9e75; color: #ffffff; box-shadow: none;
+    }
+
+    /* ── Transit times side panel ── */
+    .transit-panel {
+      width: 340px;
+      flex-shrink: 0;
+      background: rgba(18, 18, 30, 0.85);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid rgba(0, 255, 157, 0.3);
+      box-shadow:
+        0 0 20px rgba(0, 255, 157, 0.12),
+        inset 0 0 20px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 24px;
+    }
+
+    .transit-panel h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #00ff9d;
+      margin: 0 0 4px;
+      text-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .transit-panel .transit-sub {
+      font-size: 12px;
+      color: #b967ff;
+      margin: 0 0 16px;
+      text-shadow: 0 0 6px rgba(185, 103, 255, 0.5);
+    }
+
+    .transit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .transit-table th {
+      text-align: left;
+      padding: 8px 6px;
+      color: #00e5ff;
+      text-shadow: 0 0 6px rgba(0, 229, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 10px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+    }
+    .transit-table td {
+      padding: 8px 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      color: #e8e8f0;
+    }
+    .transit-table tr:hover td {
+      background: rgba(185, 103, 255, 0.08);
+    }
+    .transit-table .supplier {
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .transit-table .city {
+      color: #b0b0c0;
+      font-size: 11px;
+    }
+    .tt-badge {
+      display: inline-block;
+      font-family: "Courier New", monospace;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .tt-badge.road {
+      background: rgba(0, 229, 255, 0.15);
+      color: #00e5ff;
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      text-shadow: 0 0 5px rgba(0, 229, 255, 0.6);
+    }
+    .tt-badge.intermodal {
+      background: rgba(0, 255, 157, 0.15);
+      color: #00ff9d;
+      border: 1px solid rgba(0, 255, 157, 0.4);
+      text-shadow: 0 0 5px rgba(0, 255, 157, 0.6);
+    }
+    .tt-badge.none {
+      background: rgba(255, 255, 255, 0.04);
+      color: #666;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Light mode for transit panel */
+    body.light-mode .transit-panel {
+      background: #ffffff;
+      border: 1px solid #e5e3dc;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      backdrop-filter: none;
+    }
+    body.light-mode .transit-panel h2 {
+      color: #0f6e56; text-shadow: none; letter-spacing: 0;
+      text-transform: none; font-weight: 600;
+    }
+    body.light-mode .transit-panel .transit-sub {
+      color: #5f5e5a; text-shadow: none;
+    }
+    body.light-mode .transit-table th {
+      color: #185fa5; text-shadow: none; border-bottom-color: #e5e3dc;
+    }
+    body.light-mode .transit-table td {
+      color: #2c2c2a; border-bottom-color: #f1efe8;
+    }
+    body.light-mode .transit-table tr:hover td { background: #f9f8f3; }
+    body.light-mode .transit-table .supplier { color: #2c2c2a; }
+    body.light-mode .transit-table .city { color: #5f5e5a; }
+    body.light-mode .tt-badge.road {
+      background: #e6f1fb; color: #185fa5; border-color: #b5d4f4; text-shadow: none;
+    }
+    body.light-mode .tt-badge.intermodal {
+      background: #e1f5ee; color: #0f6e56; border-color: #9fe1cb; text-shadow: none;
+    }
+    body.light-mode .tt-badge.none {
+      background: #f5f5f0; color: #b4b2a9; border-color: #e5e3dc;
+    }
+
+    /* Responsive: stack panels on narrow screens */
+    @media (max-width: 1300px) {
+      .page-layout {
+        flex-wrap: wrap;
+      }
+      .plan-panel {
+        width: 100%;
+        position: static;
+        order: 2;
+      }
+      .page-layout .container {
+        order: 1;
+        flex: 1 1 100%;
+      }
+      .transit-panel {
+        order: 3;
+      }
+    }
+    @media (max-width: 900px) {
+      .transit-panel {
+        width: 100%;
+        position: static;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       SUBTLE MODE — przygaszenie neonowego glow
+       Zostawiamy kolory i ciemne tło, redukujemy intensywność świecenia
+       ═══════════════════════════════════════════════════════════ */
+    body:not(.light-mode) .header h1 {
+      text-shadow: 0 0 6px rgba(0, 229, 255, 0.35);
+    }
+    body:not(.light-mode) .header .subtitle {
+      text-shadow: none;
+    }
+    body:not(.light-mode) .icon-circle {
+      box-shadow: 0 0 6px rgba(0, 229, 255, 0.25), inset 0 0 6px rgba(0, 229, 255, 0.12);
+    }
+    body:not(.light-mode) .container {
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.06), inset 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+    body:not(.light-mode) .plan-panel {
+      box-shadow: 0 0 10px rgba(185, 103, 255, 0.05), inset 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+    body:not(.light-mode) .transit-panel {
+      box-shadow: 0 0 10px rgba(0, 255, 157, 0.05), inset 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Progress bar */
+    body:not(.light-mode) .progress-label { text-shadow: none; }
+    body:not(.light-mode) .progress-count { text-shadow: none; }
+    body:not(.light-mode) .progress-bar-fill {
+      box-shadow: 0 0 5px rgba(0, 255, 157, 0.35);
+    }
+
+    /* Panels headings */
+    body:not(.light-mode) .plan-panel h2,
+    body:not(.light-mode) .transit-panel h2 {
+      text-shadow: 0 0 6px rgba(185, 103, 255, 0.3);
+    }
+    body:not(.light-mode) .transit-panel h2 {
+      text-shadow: 0 0 6px rgba(0, 255, 157, 0.3);
+    }
+    body:not(.light-mode) .plan-panel .plan-sub,
+    body:not(.light-mode) .transit-panel .transit-sub { text-shadow: none; }
+
+    /* Plan panel */
+    body:not(.light-mode) .plan-day li::before { text-shadow: none; }
+    body:not(.light-mode) .plan-day.today {
+      box-shadow: 0 0 8px rgba(0, 255, 157, 0.15);
+    }
+    body:not(.light-mode) .plan-day.today .plan-day-name {
+      text-shadow: 0 0 5px rgba(0, 255, 157, 0.4);
+    }
+    body:not(.light-mode) .plan-day.today li::before { text-shadow: none; }
+    body:not(.light-mode) .today-tag {
+      box-shadow: 0 0 5px rgba(0, 255, 157, 0.35);
+    }
+
+    /* Filter pills */
+    body:not(.light-mode) .filter-pill { text-shadow: none; }
+    body:not(.light-mode) .filter-pill.active[data-filter="all"] {
+      box-shadow: 0 0 8px rgba(185, 103, 255, 0.3); text-shadow: none;
+    }
+    body:not(.light-mode) .filter-pill.active[data-filter="road"] {
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.3); text-shadow: none;
+    }
+    body:not(.light-mode) .filter-pill.active[data-filter="intermodal"] {
+      box-shadow: 0 0 8px rgba(0, 255, 157, 0.3); text-shadow: none;
+    }
+
+    /* Oil cards */
+    body:not(.light-mode) .oil-card:hover {
+      box-shadow: 0 0 8px rgba(185, 103, 255, 0.1);
+    }
+    body:not(.light-mode) .oil-card.complete {
+      box-shadow: 0 0 10px rgba(0, 255, 157, 0.18), inset 0 0 10px rgba(0, 255, 157, 0.04);
+    }
+    body:not(.light-mode) .oil-code { text-shadow: none; }
+    body:not(.light-mode) .oil-code:hover {
+      box-shadow: 0 0 6px rgba(250, 255, 0, 0.25);
+    }
+    body:not(.light-mode) .oil-card.complete .oil-code { text-shadow: none; }
+    body:not(.light-mode) .oil-code.copied,
+    body:not(.light-mode) .oil-card.complete .oil-code.copied {
+      text-shadow: none !important;
+      box-shadow: 0 0 8px rgba(0, 255, 157, 0.3) !important;
+    }
+    body:not(.light-mode) .oil-name { text-shadow: none; }
+    body:not(.light-mode) .oil-badge { text-shadow: none; }
+    body:not(.light-mode) .oil-card.complete .oil-badge {
+      box-shadow: 0 0 6px rgba(0, 255, 157, 0.35);
+    }
+    body:not(.light-mode) .chevron { text-shadow: none; }
+
+    /* Transport badges */
+    body:not(.light-mode) .transport-badge.road {
+      text-shadow: none; box-shadow: none;
+    }
+    body:not(.light-mode) .transport-badge.intermodal {
+      text-shadow: none; box-shadow: none;
+    }
+    body:not(.light-mode) .transport-badge.intermodal-electrical {
+      text-shadow: none; box-shadow: none;
+    }
+
+    /* Check items */
+    body:not(.light-mode) .check-item:hover {
+      box-shadow: 0 0 6px rgba(0, 229, 255, 0.12);
+    }
+    body:not(.light-mode) .check-item.checked {
+      box-shadow: 0 0 6px rgba(0, 255, 157, 0.15);
+    }
+    body:not(.light-mode) .check-item.checked .content p {
+      text-shadow: none;
+    }
+    body:not(.light-mode) .check-item .note { text-shadow: none; }
+
+    /* Transit table */
+    body:not(.light-mode) .transit-table th { text-shadow: none; }
+    body:not(.light-mode) .tt-badge.road { text-shadow: none; }
+    body:not(.light-mode) .tt-badge.intermodal { text-shadow: none; }
+
+    /* Result box */
+    body:not(.light-mode) .result-box {
+      box-shadow: 0 0 12px rgba(0, 255, 157, 0.2), inset 0 0 15px rgba(0, 229, 255, 0.05);
+      animation: slideIn 0.5s ease !important;
+    }
+    body:not(.light-mode) .result-icon { filter: none; }
+    body:not(.light-mode) .result-title {
+      text-shadow: 0 0 6px rgba(0, 255, 157, 0.4);
+    }
+    body:not(.light-mode) .result-message { text-shadow: none; }
+    body:not(.light-mode) .result-message strong { text-shadow: none; }
+
+    /* Buttons */
+    body:not(.light-mode) .btn {
+      text-shadow: none; box-shadow: none;
+    }
+    body:not(.light-mode) .btn:hover {
+      box-shadow: 0 0 8px rgba(185, 103, 255, 0.25);
+    }
+    body:not(.light-mode) .btn-primary {
+      text-shadow: none; box-shadow: none;
+    }
+    body:not(.light-mode) .btn-primary:hover {
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+    }
+    body:not(.light-mode) .sound-toggle,
+    body:not(.light-mode) .theme-toggle {
+      text-shadow: none; box-shadow: none;
+    }
+
+    /* Alert banners — keep readable, less aggressive */
+    body:not(.light-mode) .day-alert-banner {
+      animation: none;
+      box-shadow: 0 0 8px rgba(255, 46, 147, 0.2);
+    }
+    body:not(.light-mode) .day-alert-banner .alert-icon,
+    body:not(.light-mode) .day-alert-banner .alert-text {
+      animation: none;
+      text-shadow: 0 0 5px rgba(255, 46, 147, 0.4);
+    }
+    body:not(.light-mode) .check-item.alert:not(.checked) {
+      animation: none;
+    }
+    body:not(.light-mode) .check-item.alert:not(.checked) .content p {
+      text-shadow: none;
+    }
+    body:not(.light-mode) .weather-alert-banner {
+      text-shadow: none;
+      box-shadow: 0 0 8px rgba(239, 160, 39, 0.15);
+    }
+    body:not(.light-mode) .weather-chip { text-shadow: none; }
+
   </style>
 </head>
 <body>
+
+  <div class="page-layout">
+
+  <aside class="plan-panel">
+    <h2><span>📋</span> Plan działania</h2>
+    <p class="plan-sub">Tygodniowy harmonogram</p>
+    <div id="planBody"></div>
+  </aside>
 
   <div class="container">
     <div class="header">
       <div class="icon-circle">💧</div>
       <div>
         <h1>Planowanie olejów roślinnych</h1>
-        <p class="subtitle">Fabryka Pratau, Niemcy</p>
+        <p class="subtitle">Fabryka Pratau, Niemcy<span class="weather-chip" id="weatherChip"></span></p>
       </div>
     </div>
 
@@ -696,6 +1387,11 @@
       <div class="progress-bar">
         <div class="progress-bar-fill" id="progressBar"></div>
       </div>
+    </div>
+
+    <div class="weather-alert-banner" id="weatherAlertBanner">
+      <span class="weather-icon" id="weatherAlertIcon">🌫️</span>
+      <span id="weatherAlertText"></span>
     </div>
 
     <div class="day-alert-banner" id="dayAlertBanner">
@@ -726,7 +1422,25 @@
       <button class="btn" id="collapseAllBtn">Zwiń wszystkie</button>
       <button class="btn" id="resetBtn">↻ Resetuj</button>
       <button class="sound-toggle" id="soundToggle" title="Włącz/wyłącz dźwięki">🔊</button>
+      <button class="sound-toggle theme-toggle" id="themeToggle" title="Przełącz motyw">☀️</button>
     </div>
+  </div>
+
+  <aside class="transit-panel">
+    <h2><span>🚚</span> Transit Times</h2>
+    <p class="transit-sub">Czasy dostaw wg dostawcy</p>
+    <table class="transit-table">
+      <thead>
+        <tr>
+          <th>Dostawca / Miasto</th>
+          <th>Road</th>
+          <th>Inter.</th>
+        </tr>
+      </thead>
+      <tbody id="transitBody"></tbody>
+    </table>
+  </aside>
+
   </div>
 
   <script>
@@ -777,7 +1491,85 @@
       { code: "67230409", name: "inES48 SG", transport: ["intermodal-electrical"], checks: ["coverage", "delivery", "refining"] }
     ];
 
-    // Sarcastic messages pool
+    // ── Action plan data ──────────────────────────────────────────
+    const ACTION_PLAN = [
+      { day: 1, name: "Poniedziałek", tasks: [
+        "Start planowania.",
+        "Wpisanie do planu wstępnych dostaw."
+      ]},
+      { day: 2, name: "Wtorek", tasks: [
+        "Zweryfikowanie planu dostaw.",
+        "Zapytanie do VDBa o załadunki.",
+        "Stworzenie wszystkich POsów.",
+        "Wysłanie POsów dla LNSFa do Cargilla."
+      ]},
+      { day: 3, name: "Środa", tasks: [
+        "Wysłanie POsów do pozostałych dostawców.",
+        "Wysłanie Flatta do Natalii."
+      ]},
+      { day: 4, name: "Czwartek", tasks: [
+        "Wysłanie dodatkowych POsów do dostawców, jeżeli to konieczne."
+      ]},
+      { day: 5, name: "Piątek", tasks: [
+        "Wpisanie load refów do planu.",
+        "Sprawdzenie cen i numerów kontraktów w pliku dostawców.",
+        "Grupowanie olejów w planie dostaw."
+      ]}
+    ];
+
+    (function renderActionPlan() {
+      const planBody = document.getElementById("planBody");
+      const todayDay = new Date().getDay(); // 0=Sun..6=Sat
+      ACTION_PLAN.forEach(d => {
+        const div = document.createElement("div");
+        div.className = "plan-day" + (d.day === todayDay ? " today" : "");
+        const tag = d.day === todayDay ? ` <span class="today-tag">DZIŚ</span>` : "";
+        const items = d.tasks.map(t => `<li>${t}</li>`).join("");
+        div.innerHTML = `
+          <p class="plan-day-name">${d.name}${tag}</p>
+          <ul>${items}</ul>
+        `;
+        planBody.appendChild(div);
+      });
+    })();
+
+    // ── Transit Times data (from data.xlsx) ───────────────────────
+    const TRANSIT_TIMES = [
+      { supplier: "Cargill", city: "Riesa",       road: "6h",  intermodal: "--" },
+      { supplier: "Cargill", city: "Salzgitter",  road: "8h",  intermodal: "--" },
+      { supplier: "Bunge",   city: "Usti",        road: "8h",  intermodal: "--" },
+      { supplier: "LDC",     city: "Fokto",       road: "48h", intermodal: "--" },
+      { supplier: "ADM",     city: "Olomouc",     road: "24h", intermodal: "--" },
+      { supplier: "SD",      city: "Zwindrecht",  road: "24h", intermodal: "48h" },
+      { supplier: "Cargill", city: "Izegem",      road: "24h", intermodal: "48h" },
+      { supplier: "Bunge",   city: "Maasvlakte",  road: "24h", intermodal: "48h" },
+      { supplier: "Olenex",  city: "Brake",       road: "24h", intermodal: "--" },
+      { supplier: "Olenex",  city: "Rotterdam",   road: "24h", intermodal: "48h" },
+      { supplier: "Cargill", city: "Botlek",      road: "24h", intermodal: "48h" },
+      { supplier: "Bunge",   city: "Wormerveer",  road: "24h", intermodal: "48h" },
+      { supplier: "GAR",     city: "Farmsum",     road: "24h", intermodal: "48h" },
+      { supplier: "SRC",     city: "Zaandam",     road: "24h", intermodal: "48h" }
+    ];
+
+    (function renderTransitTable() {
+      const tbody = document.getElementById("transitBody");
+      TRANSIT_TIMES.forEach(row => {
+        const tr = document.createElement("tr");
+        const roadBadge = row.road === "--"
+          ? `<span class="tt-badge none">--</span>`
+          : `<span class="tt-badge road">${row.road}</span>`;
+        const interBadge = row.intermodal === "--"
+          ? `<span class="tt-badge none">--</span>`
+          : `<span class="tt-badge intermodal">${row.intermodal}</span>`;
+        tr.innerHTML = `
+          <td><span class="supplier">${row.supplier}</span><br><span class="city">${row.city}</span></td>
+          <td>${roadBadge}</td>
+          <td>${interBadge}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    })();
+
     const MESSAGES = [
       { title: "🎉 Brawo Robert!", message: 'Wygrałeś bon do Sodex, wartość <strong>5 PLN</strong> hehe 😏' },
       { title: "🎮 LEVEL UP!", message: 'Robert, +<strong>50 XP</strong> do planowania olejów. Do next levelu tylko <strong>999,950 XP</strong>.' },
@@ -913,6 +1705,7 @@
         resultBox.classList.add("visible");
         if (userAction) {
           setTimeout(() => playVictory(), 250);
+          setTimeout(() => launchConfetti(), 300);
         }
       } else if (allComplete) {
         resultBox.classList.add("visible");
@@ -1257,6 +2050,156 @@
     document.getElementById("collapseAllBtn").addEventListener("click", () => {
       document.querySelectorAll(".oil-card").forEach(c => c.classList.remove("expanded"));
     });
+
+    // ── Theme toggle (Neon / Light) ───────────────────────────────
+    const themeToggle = document.getElementById("themeToggle");
+    let currentTheme = "neon";
+    try {
+      const stored = localStorage.getItem("pratauTheme");
+      if (stored === "light") currentTheme = "light";
+    } catch (e) {}
+
+    function applyTheme() {
+      if (currentTheme === "light") {
+        document.body.classList.add("light-mode");
+        themeToggle.textContent = "🌙";
+      } else {
+        document.body.classList.remove("light-mode");
+        themeToggle.textContent = "☀️";
+      }
+    }
+    applyTheme();
+
+    themeToggle.addEventListener("click", () => {
+      currentTheme = currentTheme === "neon" ? "light" : "neon";
+      try { localStorage.setItem("pratauTheme", currentTheme); } catch (e) {}
+      applyTheme();
+      if (soundsEnabled) playBeep(660, 0.06, "sine", 0.04);
+    });
+
+    // ── Confetti (canvas particles) ───────────────────────────────
+    function launchConfetti() {
+      const canvas = document.createElement("canvas");
+      canvas.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;";
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext("2d");
+
+      const isLight = document.body.classList.contains("light-mode");
+      const colors = isLight
+        ? ["#378add", "#1d9e75", "#d4537e", "#7f77dd", "#efa027", "#e24b4a"]
+        : ["#00e5ff", "#00ff9d", "#ff2e93", "#b967ff", "#faff00"];
+      const particles = [];
+
+      const spawnBurst = (ox, oy, count) => {
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 6 + Math.random() * 16;
+          particles.push({
+            x: ox, y: oy,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 8,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            size: 4 + Math.random() * 9,
+            rot: Math.random() * Math.PI * 2,
+            spin: (Math.random() - 0.5) * 0.4,
+            life: 1
+          });
+        }
+      };
+
+      // Three cannons from bottom
+      spawnBurst(canvas.width * 0.2, canvas.height * 0.95, 60);
+      setTimeout(() => spawnBurst(canvas.width * 0.5, canvas.height * 0.95, 90), 120);
+      setTimeout(() => spawnBurst(canvas.width * 0.8, canvas.height * 0.95, 60), 240);
+
+      let frame = 0;
+      const maxFrames = 260;
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const p of particles) {
+          p.vy += 0.35;
+          p.vx *= 0.99;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.rot += p.spin;
+          p.life -= 0.005;
+          if (p.life <= 0) continue;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.life);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          if (!isLight) {
+            ctx.shadowColor = p.color;
+            ctx.shadowBlur = 12;
+          }
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 3, p.size, p.size * 0.55);
+          ctx.restore();
+        }
+        frame++;
+        if (frame < maxFrames) requestAnimationFrame(animate);
+        else canvas.remove();
+      }
+      animate();
+    }
+
+    // ── Weather (Open-Meteo, no API key) ──────────────────────────
+    // Pratau is a village near Lutherstadt Wittenberg
+    const PRATAU_LAT = 51.867;
+    const PRATAU_LON = 12.646;
+
+    function weatherCodeInfo(code) {
+      // WMO weather codes → { icon, label, warning }
+      if ([45, 48].includes(code))                    return { icon: "🌫️", label: "mgła", warning: true, name: "mgła" };
+      if ([71, 73, 75, 77, 85, 86].includes(code))    return { icon: "❄️", label: "śnieg", warning: true, name: "śnieg" };
+      if ([95, 96, 99].includes(code))                return { icon: "⛈️", label: "burza", warning: true, name: "burza" };
+      if ([65, 67, 82].includes(code))                return { icon: "🌧️", label: "ulewa", warning: true, name: "ulewny deszcz" };
+      if ([61, 63, 80, 81].includes(code))            return { icon: "🌧️", label: "deszcz", warning: false, name: "deszcz" };
+      if ([51, 53, 55, 56, 57, 66].includes(code))    return { icon: "🌦️", label: "mżawka", warning: false, name: "mżawka" };
+      if (code === 0)                                  return { icon: "☀️", label: "słońce", warning: false, name: "słonecznie" };
+      if (code === 1)                                  return { icon: "🌤️", label: "pogodnie", warning: false, name: "pogodnie" };
+      if (code === 2)                                  return { icon: "⛅", label: "częściowe zachmurzenie", warning: false, name: "częściowe zachmurzenie" };
+      if (code === 3)                                  return { icon: "☁️", label: "zachmurzenie", warning: false, name: "pochmurno" };
+      return { icon: "🌡️", label: "pogoda", warning: false, name: "" };
+    }
+
+    async function fetchWeather() {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${PRATAU_LAT}&longitude=${PRATAU_LON}&current=weather_code,temperature_2m&timezone=auto`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+        const code = data.current.weather_code;
+        const temp = Math.round(data.current.temperature_2m);
+        const info = weatherCodeInfo(code);
+
+        // Update chip in subtitle
+        const chip = document.getElementById("weatherChip");
+        chip.innerHTML = `<span>${info.icon}</span><span>${temp}°C</span>`;
+        chip.classList.add("loaded");
+
+        // Show warning banner if bad weather
+        const banner = document.getElementById("weatherAlertBanner");
+        const bannerIcon = document.getElementById("weatherAlertIcon");
+        const bannerText = document.getElementById("weatherAlertText");
+        if (info.warning) {
+          bannerIcon.textContent = info.icon;
+          bannerText.textContent = `Uwaga: ${info.name} w okolicy Pratau (Lutherstadt Wittenberg), dostawy mogą się opóźnić`;
+          banner.classList.add("active");
+        } else {
+          banner.classList.remove("active");
+        }
+      } catch (e) {
+        // Silent fail — offline or CORS
+      }
+    }
+
+    fetchWeather();
+    // Refresh weather every 30 min
+    setInterval(fetchWeather, 30 * 60 * 1000);
 
     // Initial load
     loadState();
