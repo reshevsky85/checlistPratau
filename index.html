@@ -493,6 +493,165 @@
         font-size: 14px;
       }
     }
+    @keyframes alertBlink {
+      0%, 100% {
+        border-color: #ff2e93;
+        box-shadow: 0 0 20px rgba(255, 46, 147, 0.6), inset 0 0 15px rgba(255, 46, 147, 0.1);
+      }
+      50% {
+        border-color: #ff0055;
+        box-shadow: 0 0 35px rgba(255, 0, 85, 0.9), inset 0 0 25px rgba(255, 0, 85, 0.2);
+      }
+    }
+
+    @keyframes textFlicker {
+      0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(255, 46, 147, 0.9), 0 0 20px rgba(255, 46, 147, 0.5); }
+      50% { opacity: 0.85; text-shadow: 0 0 20px rgba(255, 0, 85, 1), 0 0 40px rgba(255, 0, 85, 0.7); }
+    }
+
+    .day-alert-banner {
+      display: none;
+      background: rgba(255, 46, 147, 0.12);
+      border: 1px solid #ff2e93;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      color: #ff2e93;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      align-items: center;
+      gap: 10px;
+      animation: alertBlink 1.5s ease-in-out infinite;
+    }
+
+    .day-alert-banner.active {
+      display: flex;
+    }
+
+    .day-alert-banner .alert-icon {
+      font-size: 20px;
+      animation: textFlicker 1s ease-in-out infinite;
+    }
+
+    .day-alert-banner .alert-text {
+      animation: textFlicker 1.2s ease-in-out infinite;
+    }
+
+    .check-item.alert:not(.checked) {
+      animation: alertBlink 1.2s ease-in-out infinite;
+      background: rgba(255, 46, 147, 0.1);
+    }
+
+    .check-item.alert:not(.checked) .content p {
+      color: #ff2e93;
+      text-shadow: 0 0 6px rgba(255, 46, 147, 0.7);
+      font-weight: 700;
+    }
+
+    .sound-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 34px;
+      padding: 0;
+      background: transparent;
+      border: 1px solid #faff00;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #faff00;
+      transition: all 0.2s;
+      font-size: 16px;
+      text-shadow: 0 0 6px rgba(250, 255, 0, 0.8);
+      box-shadow: 0 0 8px rgba(250, 255, 0, 0.2);
+    }
+
+    .sound-toggle:hover {
+      background: rgba(250, 255, 0, 0.15);
+      box-shadow: 0 0 15px rgba(250, 255, 0, 0.5);
+    }
+
+    .sound-toggle.muted {
+      color: #666;
+      border-color: #444;
+      text-shadow: none;
+      box-shadow: none;
+      opacity: 0.5;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      padding: 4px;
+      background: rgba(10, 10, 20, 0.5);
+      border-radius: 12px;
+      border: 1px solid rgba(185, 103, 255, 0.25);
+    }
+
+    .filter-pill {
+      flex: 1;
+      padding: 8px 10px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #b967ff;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      text-shadow: 0 0 6px rgba(185, 103, 255, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .filter-pill:hover {
+      background: rgba(185, 103, 255, 0.1);
+    }
+
+    .filter-pill .pill-count {
+      font-size: 10px;
+      opacity: 0.85;
+      padding: 1px 5px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 999px;
+    }
+
+    .filter-pill.active[data-filter="all"] {
+      background: rgba(185, 103, 255, 0.2);
+      border-color: #b967ff;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(185, 103, 255, 0.6);
+      text-shadow: 0 0 8px rgba(185, 103, 255, 0.9);
+    }
+
+    .filter-pill.active[data-filter="road"] {
+      background: rgba(0, 229, 255, 0.18);
+      border-color: #00e5ff;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.65);
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.9);
+    }
+
+    .filter-pill.active[data-filter="intermodal"] {
+      background: rgba(0, 255, 157, 0.18);
+      border-color: #00ff9d;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(0, 255, 157, 0.65);
+      text-shadow: 0 0 8px rgba(0, 255, 157, 0.9);
+    }
+
+    .oil-card.filtered-out {
+      display: none;
+    }
+
   </style>
 </head>
 <body>
@@ -516,6 +675,17 @@
       </div>
     </div>
 
+    <div class="day-alert-banner" id="dayAlertBanner">
+      <span class="alert-icon">🚨</span>
+      <span class="alert-text" id="dayAlertText"></span>
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-pill active" data-filter="all">All <span class="pill-count" data-count="all">0/0</span></button>
+      <button class="filter-pill" data-filter="road">🔵 Road <span class="pill-count" data-count="road">0/0</span></button>
+      <button class="filter-pill" data-filter="intermodal">🟢 Intermodal <span class="pill-count" data-count="intermodal">0/0</span></button>
+    </div>
+
     <div class="oils-list" id="oilsList"></div>
 
     <div class="result-box" id="resultBox">
@@ -532,6 +702,7 @@
       <button class="btn btn-primary" id="expandAllBtn">Rozwiń wszystkie</button>
       <button class="btn" id="collapseAllBtn">Zwiń wszystkie</button>
       <button class="btn" id="resetBtn">↻ Resetuj</button>
+      <button class="sound-toggle" id="soundToggle" title="Włącz/wyłącz dźwięki">🔊</button>
     </div>
   </div>
 
@@ -560,7 +731,9 @@
         text: "Czy ogarnąłem załadunki z Bunge z Grzegorzem?"
       },
       posTuesday: {
-        text: "Czy wysłałem POsy we wtorek do dostawcy?"
+        text: "Czy wysłałem POsy we wtorek do dostawcy?",
+        alertDay: 2,
+        alertMessage: "Dziś WTOREK — wyślij POs dla LNSF!"
       },
       refining: {
         text: "Czy ogarnąłem rafinację?"
@@ -579,6 +752,24 @@
       { code: "388212", name: "Coconut oil", transport: ["intermodal"], checks: ["coverage", "delivery"] },
       { code: "1044558", name: "Palm oil", transport: ["intermodal"], checks: ["coverage", "delivery"] },
       { code: "67230409", name: "inES48 SG", transport: ["intermodal-electrical"], checks: ["coverage", "delivery", "refining"] }
+    ];
+
+    // Sarcastic messages pool
+    const MESSAGES = [
+      { title: "🎉 Brawo Robert!", message: 'Wygrałeś bon do Sodex, wartość <strong>5 PLN</strong> hehe 😏' },
+      { title: "🎮 LEVEL UP!", message: 'Robert, +<strong>50 XP</strong> do planowania olejów. Do next levelu tylko <strong>999,950 XP</strong>.' },
+      { title: "📜 Certyfikat wydany", message: 'Mistrz Olejów Pratau — tytuł honorowy. Wisi na ścianie w <strong>wymiarze równoległym</strong>.' },
+      { title: "🏆 Achievement unlocked", message: 'Sprawiedliwy planista <strong>Q4</strong>. Ranga: Diamond III. Nagroda: satysfakcja.' },
+      { title: "💧 Fabryka dziękuje", message: 'Palm oil dziękuje. Coconut oil dziękuje. Rafineria <strong>płacze ze wzruszenia</strong>.' },
+      { title: "👊 Robert vs Excel", message: 'Wynik: <strong>1-0</strong>. Kontynuuj passę mistrzu.' },
+      { title: "😐 SAP puścił oko", message: 'SAP właśnie się do Ciebie <strong>uśmiechnął</strong>. Krótko. Nie zdążyłeś złapać.' },
+      { title: "💸 Prawie podwyżka", message: 'Robert, jeśli będziesz tak dalej — dostaniesz <strong>PODWYŻKĘ</strong>. (żartuję, spokojnie)' },
+      { title: "⏰ Mission accomplished", message: 'Wygrałeś prawo do wyjścia z pracy o <strong>16:59</strong> zamiast 17:00. Cieszymy się razem.' },
+      { title: "👑 Cesarz Olejów", message: 'Zostałeś oficjalnie mianowany <strong>Cesarzem Olejów Pratau</strong>. Bez benefitów, bez pensji, bez wolnego.' },
+      { title: "🥇 GG WP Robert", message: 'Zaplanowałeś wszystko. Niemcy w szoku. Fabryka w Pratau <strong>bije brawo</strong>.' },
+      { title: "🚚 Ciężarówki drżą", message: 'Wszystkie ciężarówki już wiedzą gdzie jechać. <strong>Grzegorz z Bunge</strong> też ma spokojną noc.' },
+      { title: "🧠 Big brain time", message: 'Twój mózg właśnie wykonał pracę za <strong>3 osoby</strong>. Manager tego nie zauważy, ale my tak.' },
+      { title: "🎯 Perfect run", message: 'Zero błędów. Zero minusów. Zero reklamacji. <strong>100% Robert</strong>.' }
     ];
 
     // Build the DOM
@@ -649,13 +840,17 @@
     const progressCount = document.getElementById("progressCount");
     const resultBox = document.getElementById("resultBox");
 
-    function update() {
+    let lastAllComplete = false;
+
+    function update(userAction) {
       let checkedTotal = 0;
+      const newlyCompletedCards = [];
 
       OILS.forEach((oil, oilIdx) => {
         const card = document.querySelector(`.oil-card[data-oil-idx="${oilIdx}"]`);
         const checkboxes = card.querySelectorAll('input[type="checkbox"]');
         const badge = card.querySelector("[data-badge]");
+        const wasComplete = card.classList.contains("complete");
         let checkedInOil = 0;
 
         checkboxes.forEach(cb => {
@@ -671,9 +866,13 @@
 
         badge.textContent = `${checkedInOil}/${oil.checks.length}`;
 
-        if (checkedInOil === oil.checks.length) {
+        const isComplete = checkedInOil === oil.checks.length;
+        if (isComplete) {
           card.classList.add("complete");
           badge.textContent = "✓";
+          if (userAction && !wasComplete) {
+            newlyCompletedCards.push(card);
+          }
         } else {
           card.classList.remove("complete");
         }
@@ -683,15 +882,239 @@
       progressBar.style.width = pct + "%";
       progressCount.textContent = `${checkedTotal} / ${totalChecks}`;
 
-      if (checkedTotal === totalChecks) {
+      const allComplete = checkedTotal === totalChecks;
+
+      // Random sarcastic message on transition to all-complete
+      if (allComplete && !lastAllComplete) {
+        pickRandomMessage();
+        resultBox.classList.add("visible");
+        if (userAction) {
+          setTimeout(() => playVictory(), 250);
+        }
+      } else if (allComplete) {
         resultBox.classList.add("visible");
       } else {
         resultBox.classList.remove("visible");
       }
+      lastAllComplete = allComplete;
 
-      // Save state
+      // Auto-collapse newly completed cards (after brief delay so user sees the transition)
+      newlyCompletedCards.forEach(card => {
+        setTimeout(() => card.classList.remove("expanded"), 700);
+      });
+
+      // Update Tuesday-style day alerts
+      updateDayAlerts();
+
+      // Update filter pill counts + apply current filter
+      updatePillCounts();
+      applyFilter();
+
       saveState();
     }
+
+    // ── Transport filter ──────────────────────────────────────────
+    let currentFilter = "all";
+    try {
+      const stored = localStorage.getItem("pratauFilter");
+      if (stored === "all" || stored === "road" || stored === "intermodal") {
+        currentFilter = stored;
+      }
+    } catch (e) {}
+
+    function matchesFilter(oil, filter) {
+      if (filter === "all") return true;
+      const hasRoad = oil.transport.includes("road");
+      const hasIntermodal = oil.transport.some(t => t === "intermodal" || t === "intermodal-electrical");
+      if (filter === "road") return hasRoad && !hasIntermodal;
+      if (filter === "intermodal") return hasIntermodal && !hasRoad;
+      return true;
+    }
+
+    function updatePillCounts() {
+      ["all", "road", "intermodal"].forEach(filter => {
+        const matching = OILS.filter(oil => matchesFilter(oil, filter));
+        let complete = 0;
+        matching.forEach(oil => {
+          const idx = OILS.indexOf(oil);
+          const card = document.querySelector(`.oil-card[data-oil-idx="${idx}"]`);
+          if (card && card.classList.contains("complete")) complete++;
+        });
+        const el = document.querySelector(`[data-count="${filter}"]`);
+        if (el) el.textContent = `${complete}/${matching.length}`;
+      });
+    }
+
+    function applyFilter() {
+      document.querySelectorAll(".oil-card").forEach(card => {
+        const oilIdx = parseInt(card.dataset.oilIdx);
+        const oil = OILS[oilIdx];
+        card.classList.toggle("filtered-out", !matchesFilter(oil, currentFilter));
+      });
+      document.querySelectorAll(".filter-pill").forEach(p => {
+        p.classList.toggle("active", p.dataset.filter === currentFilter);
+      });
+    }
+
+    document.querySelectorAll(".filter-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        currentFilter = pill.dataset.filter;
+        try { localStorage.setItem("pratauFilter", currentFilter); } catch (e) {}
+        applyFilter();
+        // Soft click sound
+        if (soundsEnabled) playBeep(660, 0.05, "sine", 0.04);
+      });
+    });
+
+    // ── Random sarcastic message ──────────────────────────────────
+    const resultTitleEl = document.querySelector(".result-title");
+    const resultMessageEl = document.querySelector(".result-message");
+    function pickRandomMessage() {
+      const pick = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
+      resultTitleEl.textContent = pick.title;
+      resultMessageEl.innerHTML = pick.message;
+    }
+
+    // ── Day-of-week alerts ────────────────────────────────────────
+    const dayAlertBanner = document.getElementById("dayAlertBanner");
+    const dayAlertText = document.getElementById("dayAlertText");
+    function updateDayAlerts() {
+      const today = new Date().getDay(); // 0=Sun, 1=Mon, 2=Tue, ...
+      let bannerMessages = [];
+
+      OILS.forEach((oil, oilIdx) => {
+        oil.checks.forEach((checkKey, checkIdx) => {
+          const check = CHECKS[checkKey];
+          const cb = document.querySelector(
+            `input[data-oil="${oilIdx}"][data-check="${checkIdx}"]`
+          );
+          if (!cb) return;
+          const item = cb.closest(".check-item");
+          const isAlertDay = check.alertDay === today;
+          if (isAlertDay) {
+            item.classList.add("alert");
+            if (!cb.checked && check.alertMessage) {
+              bannerMessages.push(check.alertMessage);
+            }
+          } else {
+            item.classList.remove("alert");
+          }
+        });
+      });
+
+      if (bannerMessages.length > 0) {
+        dayAlertText.textContent = bannerMessages.join(" · ");
+        dayAlertBanner.classList.add("active");
+      } else {
+        dayAlertBanner.classList.remove("active");
+      }
+    }
+
+    // ── Sound system (Web Audio API) ──────────────────────────────
+    let audioCtx = null;
+    let soundsEnabled = true;
+    try {
+      const stored = localStorage.getItem("pratauSoundsEnabled");
+      if (stored === "false") soundsEnabled = false;
+    } catch (e) {}
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) { return null; }
+      }
+      return audioCtx;
+    }
+
+    function playBeep(freq, duration, type, volume) {
+      if (!soundsEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = type || "square";
+      const t0 = ctx.currentTime;
+      osc.frequency.setValueAtTime(freq, t0);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.5, t0 + duration * 0.5);
+      gain.gain.setValueAtTime(volume || 0.08, t0);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + duration);
+      osc.start(t0);
+      osc.stop(t0 + duration);
+    }
+
+    function playCheckBeep() {
+      playBeep(880, 0.08, "square", 0.06);
+    }
+    function playUncheckBeep() {
+      if (!soundsEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = "square";
+      const t0 = ctx.currentTime;
+      osc.frequency.setValueAtTime(440, t0);
+      osc.frequency.exponentialRampToValueAtTime(220, t0 + 0.08);
+      gain.gain.setValueAtTime(0.04, t0);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.1);
+      osc.start(t0); osc.stop(t0 + 0.1);
+    }
+
+    function playVictory() {
+      if (!soundsEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      // C major arpeggio + high finale
+      const notes = [
+        { freq: 523.25, delay: 0.00, dur: 0.15 }, // C5
+        { freq: 659.25, delay: 0.10, dur: 0.15 }, // E5
+        { freq: 783.99, delay: 0.20, dur: 0.15 }, // G5
+        { freq: 1046.5, delay: 0.30, dur: 0.5 },  // C6 - finale
+        { freq: 1318.5, delay: 0.30, dur: 0.5 },  // E6 harmony
+      ];
+      notes.forEach(n => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = "triangle";
+        osc.frequency.value = n.freq;
+        const t0 = ctx.currentTime + n.delay;
+        gain.gain.setValueAtTime(0.15, t0);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + n.dur);
+        osc.start(t0); osc.stop(t0 + n.dur);
+      });
+      // Extra sparkle: fast rising chirp
+      setTimeout(() => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = "sawtooth";
+        const t0 = ctx.currentTime;
+        osc.frequency.setValueAtTime(400, t0);
+        osc.frequency.exponentialRampToValueAtTime(2000, t0 + 0.4);
+        gain.gain.setValueAtTime(0.08, t0);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.4);
+        osc.start(t0); osc.stop(t0 + 0.4);
+      }, 800);
+    }
+
+    // Sound toggle button
+    const soundToggle = document.getElementById("soundToggle");
+    function refreshSoundToggle() {
+      soundToggle.textContent = soundsEnabled ? "🔊" : "🔇";
+      soundToggle.classList.toggle("muted", !soundsEnabled);
+    }
+    refreshSoundToggle();
+    soundToggle.addEventListener("click", () => {
+      soundsEnabled = !soundsEnabled;
+      refreshSoundToggle();
+      try { localStorage.setItem("pratauSoundsEnabled", soundsEnabled ? "true" : "false"); } catch (e) {}
+      if (soundsEnabled) playCheckBeep(); // audio preview + unlocks context
+    });
 
     // localStorage persistence
     function saveState() {
@@ -718,7 +1141,11 @@
 
     // Attach listeners
     document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-      cb.addEventListener("change", update);
+      cb.addEventListener("change", () => {
+        if (cb.checked) playCheckBeep();
+        else playUncheckBeep();
+        update(true);
+      });
       // Prevent card from toggling when clicking checkbox
       cb.addEventListener("click", e => e.stopPropagation());
     });
@@ -758,7 +1185,8 @@
       resetBtn.style.boxShadow = "";
       document.querySelectorAll('input[type="checkbox"]').forEach(cb => (cb.checked = false));
       try { localStorage.removeItem("pratauOilsChecklist"); } catch (e) {}
-      update();
+      lastAllComplete = false;
+      update(false);
     });
 
     document.getElementById("expandAllBtn").addEventListener("click", () => {
@@ -771,11 +1199,8 @@
 
     // Initial load
     loadState();
-    update();
-    // Expand first card by default if nothing checked
-    if (!document.querySelector('input[type="checkbox"]:checked')) {
-      document.querySelector(".oil-card").classList.add("expanded");
-    }
+    update(false);
+    // All cards start collapsed — user expands what they need
   </script>
 
 </body>
