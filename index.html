@@ -224,6 +224,31 @@
       text-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
     }
 
+    .oil-name-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tank-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #faff00;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .tank-badge.no-tank {
+      color: #777;
+      font-weight: 500;
+      font-style: italic;
+    }
+    body.light-mode .tank-badge { color: #b07a00; }
+    body.light-mode .tank-badge.no-tank { color: #999; }
+    body:not(.light-mode) .tank-badge { text-shadow: none; }
+
     .oil-info {
       flex: 1;
       min-width: 0;
@@ -1479,16 +1504,16 @@
 
     // Oil definitions
     const OILS = [
-      { code: "1044578", name: "Rapeseed oil", transport: ["road"], checks: ["stock", "coverage", "safetyStock"] },
-      { code: "1044587", name: "Sunflower oil", transport: ["road"], checks: ["stock", "coverage"] },
-      { code: "91101741", name: "inES30_inES44", transport: ["road"], checks: ["shelfLife"] },
-      { code: "91100730", name: "erE130 SF", transport: ["road", "intermodal"], checks: ["stock", "coverage"] },
-      { code: "91101280", name: "erES148", transport: ["road", "intermodal"], checks: ["stock", "coverage"] },
-      { code: "91100760", name: "erES80 SG pressed", transport: ["road", "intermodal"], checks: ["stock", "coverage", "bungeLoading"] },
-      { code: "91101963", name: "LNSF", transport: ["road", "intermodal"], checks: ["stock", "coverage", "posTuesday"] },
-      { code: "388212", name: "Coconut oil", transport: ["intermodal"], checks: ["coverage", "delivery"] },
-      { code: "1044558", name: "Palm oil", transport: ["intermodal"], checks: ["coverage", "delivery"] },
-      { code: "67230409", name: "inES48 SG", transport: ["intermodal-electrical"], checks: ["coverage", "delivery", "refining"] }
+      { code: "1044578", name: "Rapeseed oil", tank: "100t (4×25)", transport: ["road"], checks: ["stock", "coverage", "safetyStock"] },
+      { code: "1044587", name: "Sunflower oil", tank: "100t (4×25)", transport: ["road"], checks: ["stock", "coverage"] },
+      { code: "91101741", name: "inES30_inES44", tank: "50t (2×25)", transport: ["road"], checks: ["shelfLife"] },
+      { code: "91100730", name: "erE130 SF", tank: "100t (4×25)", transport: ["road", "intermodal"], checks: ["stock", "coverage"] },
+      { code: "91101280", name: "erES148", tank: "50t (2×25)", transport: ["road", "intermodal"], checks: ["stock", "coverage"] },
+      { code: "91100760", name: "erES80 SG pressed", tank: "75t (3×25)", transport: ["road", "intermodal"], checks: ["stock", "coverage", "bungeLoading"] },
+      { code: "91101963", name: "LNSF", tank: "50t (2×25)", transport: ["road", "intermodal"], checks: ["stock", "coverage", "posTuesday"] },
+      { code: "388212", name: "Coconut oil", tank: "27t (1 zbiornik)", transport: ["intermodal"], checks: ["coverage", "delivery"] },
+      { code: "1044558", name: "Palm oil", tank: "27t (1 zbiornik)", transport: ["intermodal"], checks: ["coverage", "delivery"] },
+      { code: "67230409", name: "inES48 SG", tank: "brak zbiornika", transport: ["intermodal-electrical"], checks: ["coverage", "delivery", "refining"] }
     ];
 
     // ── Action plan data ──────────────────────────────────────────
@@ -1548,7 +1573,8 @@
       { supplier: "Cargill", city: "Botlek",      road: "24h", intermodal: "48h" },
       { supplier: "Bunge",   city: "Wormerveer",  road: "24h", intermodal: "48h" },
       { supplier: "GAR",     city: "Farmsum",     road: "24h", intermodal: "48h" },
-      { supplier: "SRC",     city: "Zaandam",     road: "24h", intermodal: "48h" }
+      { supplier: "SRC",     city: "Zaandam",     road: "24h", intermodal: "48h" },
+      { supplier: "Bunge",   city: "Neuss",       road: "24h", intermodal: "48h" }
     ];
 
     (function renderTransitTable() {
@@ -1608,10 +1634,17 @@
 
       const header = document.createElement("div");
       header.className = "oil-header";
+      const tankBadge = oil.tank
+        ? `<span class="tank-badge${oil.tank === "brak zbiornika" ? " no-tank" : ""}">${oil.tank === "brak zbiornika" ? "⊘ brak zbiornika" : "🛢️ " + oil.tank}</span>`
+        : "";
+
       header.innerHTML = `
         <span class="oil-code" data-code="${oil.code}" title="Kliknij aby skopiować">${oil.code}</span>
         <div class="oil-info">
-          <div class="oil-name">${oil.name}</div>
+          <div class="oil-name-row">
+            <div class="oil-name">${oil.name}</div>
+            ${tankBadge}
+          </div>
           <div class="transport-badges">${transportBadges}</div>
         </div>
         <span class="oil-badge" data-badge>0/${oil.checks.length}</span>
