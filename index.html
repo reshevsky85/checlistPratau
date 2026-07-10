@@ -298,6 +298,14 @@
       box-shadow: 0 0 8px rgba(255, 46, 147, 0.3);
     }
 
+    .transport-badge.road-electrical {
+      background: rgba(255, 46, 147, 0.15);
+      color: #ff2e93;
+      border-color: #ff2e93;
+      text-shadow: 0 0 6px rgba(255, 46, 147, 0.8);
+      box-shadow: 0 0 8px rgba(255, 46, 147, 0.3);
+    }
+
     .oil-badge {
       display: flex;
       align-items: center;
@@ -842,6 +850,10 @@
       background: #eeedfe; color: #3c3489; border-color: #afa9ec;
       text-shadow: none; box-shadow: none;
     }
+    body.light-mode .transport-badge.road-electrical {
+      background: #eeedfe; color: #3c3489; border-color: #afa9ec;
+      text-shadow: none; box-shadow: none;
+    }
     body.light-mode .oil-badge {
       color: #5f5e5a; background: #f1efe8; border-color: #e5e3dc; text-shadow: none;
     }
@@ -1313,6 +1325,9 @@
     body:not(.light-mode) .transport-badge.intermodal-electrical {
       text-shadow: none; box-shadow: none;
     }
+    body:not(.light-mode) .transport-badge.road-electrical {
+      text-shadow: none; box-shadow: none;
+    }
 
     /* Check items */
     body:not(.light-mode) .check-item:hover {
@@ -1407,7 +1422,7 @@
     <div class="overall-progress">
       <div class="progress-header">
         <span class="progress-label">Postęp całkowity</span>
-        <span class="progress-count" id="progressCount">0 / 23</span>
+        <span class="progress-count" id="progressCount">0 / 25</span>
       </div>
       <div class="progress-bar">
         <div class="progress-bar-fill" id="progressBar"></div>
@@ -1499,6 +1514,10 @@
       },
       refining: {
         text: "Czy ogarnąłem rafinację?"
+      },
+      shelfLifeProd: {
+        text: "Czy zaplanowałem ilość tylko pod produkcję, uwzględniając Shelf Life?",
+        note: "Jeżeli produkcja nie leci regularnie z tygodnia na tydzień"
       }
     };
 
@@ -1511,9 +1530,9 @@
       { code: "91101280", name: "erES148", tank: "50t (2×25)", transport: ["road", "intermodal"], checks: ["stock", "coverage"] },
       { code: "91100760", name: "erES80 SG pressed", tank: "75t (3×25)", transport: ["road", "intermodal"], checks: ["stock", "coverage", "bungeLoading"] },
       { code: "91101963", name: "LNSF", tank: "50t (2×25)", transport: ["road", "intermodal"], checks: ["stock", "coverage", "posTuesday"] },
-      { code: "388212", name: "Coconut oil", tank: "27t (1 zbiornik)", transport: ["intermodal"], checks: ["coverage", "delivery"] },
-      { code: "1044558", name: "Palm oil", tank: "27t (1 zbiornik)", transport: ["intermodal"], checks: ["coverage", "delivery"] },
-      { code: "67230409", name: "inES48 SG", tank: "brak zbiornika", transport: ["intermodal-electrical"], checks: ["coverage", "delivery", "refining"] }
+      { code: "388212", name: "Coconut oil", tank: "27t (1 zbiornik)", transport: ["intermodal"], checks: ["coverage", "delivery", "shelfLifeProd"] },
+      { code: "1044558", name: "Palm oil", tank: "27t (1 zbiornik)", transport: ["intermodal"], checks: ["coverage", "delivery", "shelfLifeProd"] },
+      { code: "67230409", name: "inES48 SG", tank: "brak zbiornika", transport: ["road-electrical"], checks: ["coverage", "delivery", "refining"] }
     ];
 
     // ── Action plan data ──────────────────────────────────────────
@@ -1620,7 +1639,8 @@
     const TRANSPORT_LABELS = {
       "road": "Road",
       "intermodal": "Intermodal",
-      "intermodal-electrical": "Intermodal Electrical"
+      "intermodal-electrical": "Intermodal Electrical",
+      "road-electrical": "Road Electrical"
     };
 
     OILS.forEach((oil, oilIdx) => {
@@ -1811,7 +1831,7 @@
 
     function matchesFilter(oil, filter) {
       if (filter === "all") return true;
-      const hasRoad = oil.transport.includes("road");
+      const hasRoad = oil.transport.some(t => t === "road" || t === "road-electrical");
       const hasIntermodal = oil.transport.some(t => t === "intermodal" || t === "intermodal-electrical");
       if (filter === "road") return hasRoad && !hasIntermodal;
       if (filter === "intermodal") return hasIntermodal && !hasRoad;
